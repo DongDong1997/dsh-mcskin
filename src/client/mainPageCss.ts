@@ -76,3 +76,73 @@ export const PICKER_AND_DECORATION_CSS =
   'body.mcskin-decor button[class*="close"] > svg{display:none;}' +
   'body.mcskin-decor button[class*="close"]{position:relative;color:transparent !important;}' +
   'body.mcskin-decor button[class*="close"]::before{content:"";display:block;width:12px;height:12px;background-image:' + rectsToDataUrl(rectsFromIcon('creeper')) + ';background-size:contain;background-repeat:no-repeat;opacity:0.6;image-rendering:pixelated;}';
+
+/**
+ * Shiki syntax-highlighting token override per-theme. Each entry maps
+ * `--shiki-*` to a background+foreground pair tuned for the active theme's
+ * contrast; theme tokens are laid down before this so the bg matches the
+ * block-quote rendered surface.
+ */
+export function shikiFor(style: 'classic' | 'modern' | 'dark'): {
+  light: Record<string, string>
+  dark: Record<string, string>
+} {
+  if (style === 'classic') {
+    return {
+      light: {
+        '--shiki-foreground': '#E8E8E8', '--shiki-background': '#2D2D2D',
+        '--shiki-token-constant': '#FCDB05', '--shiki-token-string': '#5DEC8C',
+        '--shiki-token-comment': '#7A8570', '--shiki-token-keyword': '#A042E0',
+        '--shiki-token-parameter': '#FF8B3D', '--shiki-token-function': '#5DECF5',
+        '--shiki-token-string-expression': '#3FB97F', '--shiki-token-punctuation': '#B0B0B0',
+        '--shiki-token-link': '#FFE34A',
+      },
+      dark: {
+        '--shiki-foreground': '#E5DAEC', '--shiki-background': '#15151A',
+        '--shiki-token-constant': '#FCDB05', '--shiki-token-string': '#5DEC8C',
+        '--shiki-token-comment': '#6A6580', '--shiki-token-keyword': '#B287F5',
+        '--shiki-token-parameter': '#FF8B3D', '--shiki-token-function': '#5DECF5',
+        '--shiki-token-string-expression': '#3FB97F', '--shiki-token-punctuation': '#8888A0',
+        '--shiki-token-link': '#FFE34A',
+      },
+    }
+  }
+  if (style === 'modern') {
+    return {
+      light: {
+        '--shiki-foreground': '#2D2418', '--shiki-background': '#FFFCF5',
+        '--shiki-token-constant': '#2D8E4A', '--shiki-token-string': '#A8451A',
+        '--shiki-token-comment': '#8A7A60', '--shiki-token-keyword': '#6B2DBC',
+        '--shiki-token-parameter': '#E2A632', '--shiki-token-function': '#2D8E4A',
+        '--shiki-token-string-expression': '#A8451A', '--shiki-token-punctuation': '#5A4A30',
+        '--shiki-token-link': '#1F7A52',
+      },
+      dark: {
+        '--shiki-foreground': '#EAE4D9', '--shiki-background': '#16181C',
+        '--shiki-token-constant': '#5DEC8C', '--shiki-token-string': '#FFA85F',
+        '--shiki-token-comment': '#6A6458', '--shiki-token-keyword': '#C49DFF',
+        '--shiki-token-parameter': '#FFD24A', '--shiki-token-function': '#5DEC8C',
+        '--shiki-token-string-expression': '#FFA85F', '--shiki-token-punctuation': '#8A8478',
+        '--shiki-token-link': '#5DD597',
+      },
+    }
+  }
+  return {
+    light: {
+      '--shiki-foreground': '#1A0F2A', '--shiki-background': '#F0F1B0',
+      '--shiki-token-constant': '#6B2DBC', '--shiki-token-string': '#3F2F4F',
+      '--shiki-token-comment': '#7A6A80', '--shiki-token-keyword': '#5A249F',
+      '--shiki-token-parameter': '#FF8B3D', '--shiki-token-function': '#5A249F',
+      '--shiki-token-string-expression': '#3F2F4F', '--shiki-token-punctuation': '#5A4A60',
+      '--shiki-token-link': '#9D6FE6',
+    },
+    dark: {
+      '--shiki-foreground': '#E5DAEC', '--shiki-background': '#08080E',
+      '--shiki-token-constant': '#C490FF', '--shiki-token-string': '#5DECF5',
+      '--shiki-token-comment': '#6A6580', '--shiki-token-keyword': '#D5A5FF',
+      '--shiki-token-parameter': '#FFD24A', '--shiki-token-function': '#5DECF5',
+      '--shiki-token-string-expression': '#5DECF5', '--shiki-token-punctuation': '#8A85A0',
+      '--shiki-token-link': '#C49DFF',
+    },
+  }
+}

@@ -2,12 +2,17 @@
 // the entry per tsdown.config.ts, bundles the React fragment, and writes
 // `./dist/client.js` for the DSH modules scanner.
 //
-// The shape mirrors what `cordis_define` expects when the runtime loads
-// the bundle inline. The DSH loader imports the package's
-// `exports['./client']` (which points to `./dist/client.js`) and invokes
-// `apply(ctx)` to wire this plugin into the browser runtime.
+// Cordis loader contract (vendor/cordis/src/loader/config/entry.ts):
+//   - `name`     — optional display id
+//   - `inject`   — REQUIRED when apply() touches other plugins' services;
+//                   blocks apply() until those services are registered.
+//   - `apply`    — the actual activation function called with `ctx`.
+//
+// The DSH loader imports this module and runs `apply(ctx)`. We expose the
+// three named exports so the loader can read each via static analysis; the
+// default export is for downstream consumers that import the whole module.
 
-import { apply, name } from './mcskin'
+import { apply, name, inject } from './mcskin'
 
-export { name, apply }
-export default { name, apply }
+export { name, inject, apply }
+export default { name, inject, apply }

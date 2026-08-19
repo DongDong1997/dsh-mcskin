@@ -1,6 +1,105 @@
-import * as React from "react";
+import * as React$1 from "react";
 
 //#region src/client/palettes.ts
+/**
+* Expand a single McPalette semantic spec into the full --dsw-alias-* +
+* --dsw-specific-* token map. Each semantic key maps 1:1 to one token name
+* with its DSH color value, so the patch can be diffed against the design
+* system at a glance.
+*/
+function buildTokens(p) {
+	return {
+		"--dsw-alias-bg-base": p.bgBase,
+		"--dsw-alias-bg-layer-1": p.bgL1,
+		"--dsw-alias-bg-layer-2": p.bgL2,
+		"--dsw-alias-bg-layer-3": p.bgL3,
+		"--dsw-alias-bg-overlay": p.bgOverlay,
+		"--dsw-alias-bg-module-platform": p.bgModule,
+		"--dsw-alias-bg-multi-select": p.bgMulti,
+		"--dsw-alias-bg-skeleton": p.bgSkeleton,
+		"--dsw-alias-bg-mask-1": p.bgMask1,
+		"--dsw-alias-bg-mask-2": p.bgMask2,
+		"--dsw-alias-bg-mask-3": p.bgMask3,
+		"--dsw-alias-bg-mask-photo": p.bgMaskPhoto,
+		"--dsw-alias-bg-mask-drop": p.bgMaskDrop,
+		"--dsw-alias-border-l1": p.borderL1,
+		"--dsw-alias-border-l2": p.borderL2,
+		"--dsw-alias-border-l3": p.borderL3,
+		"--dsw-alias-border-l4": p.borderL4,
+		"--dsw-alias-border-l2-darkmode-thin": p.borderL2DT,
+		"--dsw-alias-border-inverted": p.borderInv,
+		"--dsw-alias-border-inverted2": p.borderInv2,
+		"--dsw-alias-brand-primary": p.brand,
+		"--dsw-alias-brand-primary-invert": p.brandInv,
+		"--dsw-alias-brand-text": p.brandText,
+		"--dsw-alias-brand-primary-new-colorprimary-new-color": p.brand,
+		"--dsw-alias-button-contrast-fill": p.btnContrast,
+		"--dsw-alias-button-elevated-fill": p.btnElev,
+		"--dsw-alias-button-floating-fill": p.btnFloat,
+		"--dsw-alias-button-floating-hover": p.btnFloatH,
+		"--dsw-alias-button-ghost-active-border": p.btnGhostB,
+		"--dsw-alias-button-ghost-active-fill": p.btnGhostF,
+		"--dsw-alias-button-ghost-active-hover": p.btnGhostH,
+		"--dsw-alias-button-info-fill": p.btnInfo,
+		"--dsw-alias-button-info-hover": p.btnInfoH,
+		"--dsw-alias-button-primary-fill": p.brand,
+		"--dsw-alias-button-primary-hover": p.btnInfoH,
+		"--dsw-alias-button-primary-dimmed": p.btnPrimDim,
+		"--dsw-alias-button-tool-bar-fill": p.btnTB,
+		"--dsw-alias-button-tool-bar-fill-invisible": p.btnTBI,
+		"--dsw-alias-button-tool-bar-hover": p.btnTBH,
+		"--dsw-alias-interactive-bg-active": p.intActive,
+		"--dsw-alias-interactive-bg-hover": p.intHover,
+		"--dsw-alias-interactive-bg-hover-accent": p.intHoverAcc,
+		"--dsw-alias-interactive-bg-hover-danger": p.intHoverDanger,
+		"--dsw-alias-interactive-bg-hover-solid": p.intHoverSolid,
+		"--dsw-alias-label-primary": p.labelPri,
+		"--dsw-alias-label-secondary": p.labelSec,
+		"--dsw-alias-label-tertiary": p.labelTer,
+		"--dsw-alias-label-caption": p.labelCap,
+		"--dsw-alias-label-dimmed": p.labelDim,
+		"--dsw-alias-label-primary-bluish": p.labelPriB,
+		"--dsw-alias-label-primary-dimmed": p.labelPriD,
+		"--dsw-alias-label-primary-foreground": p.labelPriF,
+		"--dsw-alias-label-primary-inverted": p.labelPriI,
+		"--dsw-alias-markdown-citation": p.mdCitation,
+		"--dsw-alias-markdown-code-block": p.mdCode,
+		"--dsw-alias-markdown-code-block-banner": p.mdCodeBanner,
+		"--dsw-alias-markdown-code-segment-selected": p.mdCodeSegS,
+		"--dsw-alias-markdown-code-segment-unselected": p.mdCodeSegU,
+		"--dsw-alias-markdown-inline-code": p.mdInline,
+		"--dsw-alias-markdown-placeholder": p.mdPlace,
+		"--dsw-alias-markdown-tag": p.mdTag,
+		"--dsw-alias-scrollbar-bg-l1": p.scrlL1,
+		"--dsw-alias-scrollbar-bg-l2": p.scrlL2,
+		"--dsw-alias-scrollbar-hover-l1": p.scrlH1,
+		"--dsw-alias-scrollbar-hover-l2": p.scrlH2,
+		"--dsw-alias-state-business-primary": p.busPri,
+		"--dsw-alias-state-business-tertiary": p.busTer,
+		"--dsw-alias-state-error-primary": p.errPri,
+		"--dsw-alias-state-error-secondary": p.errSec,
+		"--dsw-alias-state-success-primary": p.sucPri,
+		"--dsw-alias-state-success-secondary": p.sucSec,
+		"--dsw-alias-state-success-tertiary": p.sucTer,
+		"--dsw-alias-state-warn-label": p.warnLab,
+		"--dsw-alias-state-warn-primary": p.warnPri,
+		"--dsw-alias-state-warn-secondary": p.warnSec,
+		"--dsw-alias-state-warn-tertiary": p.warnTer,
+		"--dsw-alias-toast-bg": p.toastBg,
+		"--dsw-alias-tooltip-bg": p.tooltipBg,
+		"--dsw-specific-bubble": p.bubble,
+		"--dsw-specific-bubble-highlight": p.bubbleHL,
+		"--dsw-specific-input-major": p.inputMaj,
+		"--dsw-specific-login-input": p.loginIn,
+		"--dsw-specific-menu": p.menu,
+		"--dsw-specific-selector": p.selector,
+		"--dsw-specific-sidebar-fill": p.sideFill,
+		"--dsw-specific-sidebar-nav-item-active": p.sideNA,
+		"--dsw-specific-sidebar-nav-item-active-accent": p.sideNAA,
+		"--dsw-specific-sidebar-nav-item-hover": p.sideNH,
+		"--dsw-specific-tip": p.tip
+	};
+}
 const PALETTES = {
 	classicDay: {
 		bgBase: "#A5D75A",
@@ -684,7 +783,7 @@ const px = (x, y, w, h, c) => [
 	c
 ];
 function svgFrame(children) {
-	return React.createElement("svg", {
+	return React$1.createElement("svg", {
 		viewBox: "0 0 16 16",
 		shapeRendering: "crispEdges",
 		xmlns: "http://www.w3.org/2000/svg",
@@ -695,7 +794,7 @@ function mkIcon(rects) {
 	const kids = [];
 	for (let i = 0; i < rects.length; i++) {
 		const r = rects[i];
-		kids.push(React.createElement("rect", {
+		kids.push(React$1.createElement("rect", {
 			key: "r" + i,
 			x: r[0],
 			y: r[1],
@@ -1291,7 +1390,7 @@ const MC_ICONS = {
 };
 function renderIcon(name) {
 	const png = PNG_ICONS[name];
-	if (png) return React.createElement("img", {
+	if (png) return React$1.createElement("img", {
 		src: png,
 		alt: name,
 		className: "mcskin-svg",
@@ -1309,36 +1408,36 @@ function renderIcon(name) {
 //#region src/client/picker.tsx
 function McSkinCard(props) {
 	const t = props.entry;
-	return React.createElement("button", {
+	return React$1.createElement("button", {
 		className: "mcskin-card" + (props.active ? " active" : ""),
 		onClick: props.onPick,
 		type: "button"
-	}, React.createElement("div", { className: "mcskin-card-head" }, React.createElement("p", { className: "mcskin-card-title" }, t.name), React.createElement("p", { className: "mcskin-card-mode" }, t.mode)), React.createElement("div", { className: "mcskin-icons" }, t.icons.map(function(iconName, i) {
-		return React.createElement("div", {
+	}, React$1.createElement("div", { className: "mcskin-card-head" }, React$1.createElement("p", { className: "mcskin-card-title" }, t.name), React$1.createElement("p", { className: "mcskin-card-mode" }, t.mode)), React$1.createElement("div", { className: "mcskin-icons" }, t.icons.map(function(iconName, i) {
+		return React$1.createElement("div", {
 			key: iconName + "-" + i,
 			className: "mcskin-icon-tile",
 			title: iconName
 		}, renderIcon(iconName));
-	})), React.createElement("div", { className: "mcskin-card-desc" }, t.desc), React.createElement("div", { className: "mcskin-card-foot" }, props.active ? "✓ 已启用" : "点击应用"));
+	})), React$1.createElement("div", { className: "mcskin-card-desc" }, t.desc), React$1.createElement("div", { className: "mcskin-card-foot" }, props.active ? "✓ 已启用" : "点击应用"));
 }
 function CreeperFace() {
 	return renderIcon("creeper");
 }
 function PickerRoot(props) {
 	const initialSnap = props.theme.getTheme();
-	const [activeId, setActiveId] = React.useState(initialSnap.active.id);
-	React.useEffect(function() {
+	const [activeId, setActiveId] = React$1.useState(initialSnap.active.id);
+	React$1.useEffect(function() {
 		const handler = function(snap) {
 			setActiveId(snap.active.id);
 		};
 		return props.ctx.on("theme/change", handler);
 	}, []);
-	return React.createElement("div", { className: "mcskin-root" }, React.createElement("div", { className: "mcskin-header" }, React.createElement("div", { style: {
+	return React$1.createElement("div", { className: "mcskin-root" }, React$1.createElement("div", { className: "mcskin-header" }, React$1.createElement("div", { style: {
 		width: "36px",
 		height: "36px",
 		flexShrink: 0
-	} }, React.createElement(CreeperFace, null)), React.createElement("h2", { className: "mcskin-title" }, "🎮 Minecraft 主题")), React.createElement("p", { className: "mcskin-subtitle" }, "在 3 种风格 × 2 套明暗中自由切换。色板按 MC 方块配色定制，叠加高优先级 token 覆盖以胜过其他主题插件。侧栏显示方块条带，主页控件（设置、品牌、输入框、发送、新会话）也会换成 MC 元素。"), React.createElement("div", { className: "mcskin-grid" }, props.themes.map(function(t) {
-		return React.createElement(McSkinCard, {
+	} }, React$1.createElement(CreeperFace, null)), React$1.createElement("h2", { className: "mcskin-title" }, "🎮 Minecraft 主题")), React$1.createElement("p", { className: "mcskin-subtitle" }, "在 3 种风格 × 2 套明暗中自由切换。色板按 MC 方块配色定制，叠加高优先级 token 覆盖以胜过其他主题插件。侧栏显示方块条带，主页控件（设置、品牌、输入框、发送、新会话）也会换成 MC 元素。"), React$1.createElement("div", { className: "mcskin-grid" }, props.themes.map(function(t) {
+		return React$1.createElement(McSkinCard, {
 			key: t.id,
 			entry: t,
 			active: activeId === t.id,
@@ -1346,10 +1445,10 @@ function PickerRoot(props) {
 				props.theme.setTheme(t.id);
 			}
 		});
-	})), React.createElement("div", { className: "mcskin-footer" }, React.createElement("span", { style: {
+	})), React$1.createElement("div", { className: "mcskin-footer" }, React$1.createElement("span", { style: {
 		color: "var(--dsw-alias-label-tertiary)",
 		fontSize: "12px"
-	} }, "当前：" + activeId), React.createElement("button", {
+	} }, "当前：" + activeId), React$1.createElement("button", {
 		className: "mcskin-btn",
 		type: "button",
 		onClick: function() {
@@ -1383,102 +1482,12 @@ function rectsToDataUrl(rects) {
 	}).join("") + "</svg>") + "\")";
 }
 const PICKER_AND_DECORATION_CSS = ".mcskin-root{padding:24px 24px 32px;font-family:var(--dsw-font-family);box-sizing:border-box;}.mcskin-header{display:flex;align-items:center;gap:12px;margin-bottom:6px;}.mcskin-title{font-family:\"Press Start 2P\",monospace;font-size:14px;color:var(--dsw-alias-label-primary);margin:0;letter-spacing:.5px;}.mcskin-subtitle{color:var(--dsw-alias-label-tertiary);font-size:13px;margin:0 0 18px;line-height:20px;}.mcskin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}@media (max-width:820px){.mcskin-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}@media (max-width:560px){.mcskin-grid{grid-template-columns:1fr;}}.mcskin-card{border:2px solid var(--dsw-alias-border-l2);border-radius:6px;padding:0;cursor:pointer;transition:transform .1s ease,box-shadow .1s ease;font-family:inherit;text-align:left;background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);overflow:hidden;box-sizing:border-box;display:flex;flex-direction:column;}.mcskin-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px var(--dsw-alias-bg-mask-2);}.mcskin-card.active{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--dsw-alias-brand-primary) 35%,transparent);}.mcskin-card-head{padding:10px 14px;border-bottom:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);}.mcskin-card-title{font-family:\"Press Start 2P\",monospace;font-size:9px;color:var(--dsw-alias-label-primary);margin:0;letter-spacing:.4px;}.mcskin-card-mode{font-size:11px;color:var(--dsw-alias-label-tertiary);margin-top:6px;}.mcskin-icons{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:10px 14px 6px;}.mcskin-icon-tile{aspect-ratio:1/1;border:1px solid var(--dsw-alias-border-l2);border-radius:3px;display:flex;align-items:center;justify-content:center;background:var(--dsw-alias-bg-layer-2);image-rendering:pixelated;padding:4px;}.mcskin-svg{width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;}.mcskin-card-desc{padding:6px 14px 10px;color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;min-height:54px;}.mcskin-card-foot{padding:6px 14px 10px;color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px;border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);}.mcskin-card.active .mcskin-card-foot{color:var(--dsw-alias-brand-primary);}.mcskin-footer{margin-top:24px;display:flex;justify-content:space-between;align-items:center;gap:8px;}.mcskin-btn{padding:8px 16px;border:1px solid var(--dsw-alias-border-l2);border-radius:4px;background:var(--dsw-alias-button-elevated-fill);color:var(--dsw-alias-label-primary);cursor:pointer;font-family:inherit;font-size:13px;}.mcskin-btn:hover{background:var(--dsw-alias-interactive-bg-hover-solid);}body.mcskin-decor::before{content:\"\";position:fixed;top:0;left:0;right:0;height:6px;background:var(--dsw-alias-brand-primary);box-shadow:0 1px 0 rgba(0,0,0,0.18);z-index:99999;pointer-events:none;}body.mcskin-decor::after{content:\"\";position:fixed;bottom:14px;right:14px;width:34px;height:34px;background-image:" + rectsToDataUrl(rectsFromIcon("creeper")) + ";background-size:contain;background-repeat:no-repeat;opacity:0.35;pointer-events:none;z-index:99998;}body.mcskin-decor button[aria-haspopup=\"dialog\"]{position:relative;}body.mcskin-decor button[aria-haspopup=\"dialog\"] > svg{display:none;}body.mcskin-decor button[aria-haspopup=\"dialog\"]::before{content:\"\";display:inline-block;width:18px;height:18px;background-image:" + rectsToDataUrl(rectsFromIcon("chest")) + ";background-size:contain;background-repeat:no-repeat;vertical-align:middle;margin-right:6px;image-rendering:pixelated;}body.mcskin-decor button[class*=\"_brand__\"] > svg{display:none;}body.mcskin-decor button[class*=\"_brand__\"]{position:relative;padding-left:36px;}body.mcskin-decor button[class*=\"_brand__\"]::before{content:\"\";position:absolute;left:6px;top:50%;transform:translateY(-50%);width:24px;height:24px;background-image:" + rectsToDataUrl(rectsFromIcon("grassBlock")) + ";background-size:contain;background-repeat:no-repeat;image-rendering:pixelated;}body.mcskin-decor [class*=\"newSession\"] > svg{display:none;}body.mcskin-decor [class*=\"newSession\"]{position:relative;border:1px solid #6F4F2A !important;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05);}body.mcskin-decor [class*=\"newSession\"]::before{content:\"\";display:inline-block;width:16px;height:16px;background-image:" + rectsToDataUrl(rectsFromIcon("pickaxe")) + ";background-size:contain;background-repeat:no-repeat;vertical-align:middle;margin-right:4px;image-rendering:pixelated;}body.mcskin-decor [class*=\"primary\"] > svg{display:none;}body.mcskin-decor [class*=\"primary\"]{position:relative;border:2px solid #3FB9C5 !important;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.2),0 1px 0 rgba(0,0,0,0.2);}body.mcskin-decor [class*=\"primary\"]::before{content:\"\";display:block;width:18px;height:18px;background-image:" + rectsToDataUrl(rectsFromIcon("sword")) + ";background-size:contain;background-repeat:no-repeat;margin:0 auto;image-rendering:pixelated;}body.mcskin-decor [class*=\"card__\"]{border:2px solid #6F4F2A !important;box-shadow:inset 0 0 0 2px #A87F4D,inset 0 0 0 4px #6F4F2A,inset 0 4px 8px rgba(0,0,0,0.18) !important;}body.mcskin-decor textarea{font-family:inherit !important;}body.mcskin-decor button[class*=\"close\"] > svg{display:none;}body.mcskin-decor button[class*=\"close\"]{position:relative;color:transparent !important;}body.mcskin-decor button[class*=\"close\"]::before{content:\"\";display:block;width:12px;height:12px;background-image:" + rectsToDataUrl(rectsFromIcon("creeper")) + ";background-size:contain;background-repeat:no-repeat;opacity:0.6;image-rendering:pixelated;}";
-
-//#endregion
-//#region src/client/mcskin.ts
-function buildTokens(p) {
-	return {
-		"--dsw-alias-bg-base": p.bgBase,
-		"--dsw-alias-bg-layer-1": p.bgL1,
-		"--dsw-alias-bg-layer-2": p.bgL2,
-		"--dsw-alias-bg-layer-3": p.bgL3,
-		"--dsw-alias-bg-overlay": p.bgOverlay,
-		"--dsw-alias-bg-module-platform": p.bgModule,
-		"--dsw-alias-bg-multi-select": p.bgMulti,
-		"--dsw-alias-bg-skeleton": p.bgSkeleton,
-		"--dsw-alias-bg-mask-1": p.bgMask1,
-		"--dsw-alias-bg-mask-2": p.bgMask2,
-		"--dsw-alias-bg-mask-3": p.bgMask3,
-		"--dsw-alias-bg-mask-photo": p.bgMaskPhoto,
-		"--dsw-alias-bg-mask-drop": p.bgMaskDrop,
-		"--dsw-alias-border-l1": p.borderL1,
-		"--dsw-alias-border-l2": p.borderL2,
-		"--dsw-alias-border-l3": p.borderL3,
-		"--dsw-alias-border-l4": p.borderL4,
-		"--dsw-alias-border-l2-darkmode-thin": p.borderL2DT,
-		"--dsw-alias-border-inverted": p.borderInv,
-		"--dsw-alias-border-inverted2": p.borderInv2,
-		"--dsw-alias-brand-primary": p.brand,
-		"--dsw-alias-brand-primary-invert": p.brandInv,
-		"--dsw-alias-brand-text": p.brandText,
-		"--dsw-alias-brand-primary-new-colorprimary-new-color": p.brand,
-		"--dsw-alias-button-contrast-fill": p.btnContrast,
-		"--dsw-alias-button-elevated-fill": p.btnElev,
-		"--dsw-alias-button-floating-fill": p.btnFloat,
-		"--dsw-alias-button-floating-hover": p.btnFloatH,
-		"--dsw-alias-button-ghost-active-border": p.btnGhostB,
-		"--dsw-alias-button-ghost-active-fill": p.btnGhostF,
-		"--dsw-alias-button-ghost-active-hover": p.btnGhostH,
-		"--dsw-alias-button-info-fill": p.btnInfo,
-		"--dsw-alias-button-info-hover": p.btnInfoH,
-		"--dsw-alias-button-primary-fill": p.brand,
-		"--dsw-alias-button-primary-hover": p.btnInfoH,
-		"--dsw-alias-button-primary-dimmed": p.btnPrimDim,
-		"--dsw-alias-button-tool-bar-fill": p.btnTB,
-		"--dsw-alias-button-tool-bar-fill-invisible": p.btnTBI,
-		"--dsw-alias-button-tool-bar-hover": p.btnTBH,
-		"--dsw-alias-interactive-bg-active": p.intActive,
-		"--dsw-alias-interactive-bg-hover": p.intHover,
-		"--dsw-alias-interactive-bg-hover-accent": p.intHoverAcc,
-		"--dsw-alias-interactive-bg-hover-danger": p.intHoverDanger,
-		"--dsw-alias-interactive-bg-hover-solid": p.intHoverSolid,
-		"--dsw-alias-label-primary": p.labelPri,
-		"--dsw-alias-label-secondary": p.labelSec,
-		"--dsw-alias-label-tertiary": p.labelTer,
-		"--dsw-alias-label-caption": p.labelCap,
-		"--dsw-alias-label-dimmed": p.labelDim,
-		"--dsw-alias-label-primary-bluish": p.labelPriB,
-		"--dsw-alias-label-primary-dimmed": p.labelPriD,
-		"--dsw-alias-label-primary-foreground": p.labelPriF,
-		"--dsw-alias-label-primary-inverted": p.labelPriI,
-		"--dsw-alias-markdown-citation": p.mdCitation,
-		"--dsw-alias-markdown-code-block": p.mdCode,
-		"--dsw-alias-markdown-code-block-banner": p.mdCodeBanner,
-		"--dsw-alias-markdown-code-segment-selected": p.mdCodeSegS,
-		"--dsw-alias-markdown-code-segment-unselected": p.mdCodeSegU,
-		"--dsw-alias-markdown-inline-code": p.mdInline,
-		"--dsw-alias-markdown-placeholder": p.mdPlace,
-		"--dsw-alias-markdown-tag": p.mdTag,
-		"--dsw-alias-scrollbar-bg-l1": p.scrlL1,
-		"--dsw-alias-scrollbar-bg-l2": p.scrlL2,
-		"--dsw-alias-scrollbar-hover-l1": p.scrlH1,
-		"--dsw-alias-scrollbar-hover-l2": p.scrlH2,
-		"--dsw-alias-state-business-primary": p.busPri,
-		"--dsw-alias-state-business-tertiary": p.busTer,
-		"--dsw-alias-state-error-primary": p.errPri,
-		"--dsw-alias-state-error-secondary": p.errSec,
-		"--dsw-alias-state-success-primary": p.sucPri,
-		"--dsw-alias-state-success-secondary": p.sucSec,
-		"--dsw-alias-state-success-tertiary": p.sucTer,
-		"--dsw-alias-state-warn-label": p.warnLab,
-		"--dsw-alias-state-warn-primary": p.warnPri,
-		"--dsw-alias-state-warn-secondary": p.warnSec,
-		"--dsw-alias-state-warn-tertiary": p.warnTer,
-		"--dsw-alias-toast-bg": p.toastBg,
-		"--dsw-alias-tooltip-bg": p.tooltipBg,
-		"--dsw-specific-bubble": p.bubble,
-		"--dsw-specific-bubble-highlight": p.bubbleHL,
-		"--dsw-specific-input-major": p.inputMaj,
-		"--dsw-specific-login-input": p.loginIn,
-		"--dsw-specific-menu": p.menu,
-		"--dsw-specific-selector": p.selector,
-		"--dsw-specific-sidebar-fill": p.sideFill,
-		"--dsw-specific-sidebar-nav-item-active": p.sideNA,
-		"--dsw-specific-sidebar-nav-item-active-accent": p.sideNAA,
-		"--dsw-specific-sidebar-nav-item-hover": p.sideNH,
-		"--dsw-specific-tip": p.tip
-	};
-}
+/**
+* Shiki syntax-highlighting token override per-theme. Each entry maps
+* `--shiki-*` to a background+foreground pair tuned for the active theme's
+* contrast; theme tokens are laid down before this so the bg matches the
+* block-quote rendered surface.
+*/
 function shikiFor(style) {
 	if (style === "classic") return {
 		light: {
@@ -1565,76 +1574,82 @@ function shikiFor(style) {
 		}
 	};
 }
+
+//#endregion
+//#region src/client/mcskin.ts
 const name = "dsh-mcskin";
+const inject = ["styles"];
 function apply(ctx) {
-	const theme = ctx.theme;
-	const slots = ctx.slots;
+	const theme = ctx.theme !== void 0 ? ctx.theme : null;
+	const slots = ctx.slots !== void 0 ? ctx.slots : null;
 	try {
 		document.body.classList.add("mcskin-decor");
 	} catch (e) {}
-	for (let i = 0; i < THEME_ENTRIES.length; i++) {
-		const t = THEME_ENTRIES[i];
-		ctx.effect(function() {
-			return theme.register({
-				id: t.id,
-				colorScheme: t.colorScheme,
-				tokens: buildTokens(t.palette)
+	if (theme !== null) {
+		for (let i = 0; i < THEME_ENTRIES.length; i++) {
+			const t = THEME_ENTRIES[i];
+			ctx.effect(function() {
+				return theme.register({
+					id: t.id,
+					colorScheme: t.colorScheme,
+					tokens: buildTokens(t.palette)
+				});
 			});
+		}
+		const paletteDisposers = {};
+		function applyPaletteOverride(id) {
+			for (const k of Object.keys(paletteDisposers)) {
+				paletteDisposers[k]();
+				delete paletteDisposers[k];
+			}
+			const entry = THEME_ENTRIES.find(function(t) {
+				return t.id === id;
+			});
+			if (!entry) return;
+			const flat = buildTokens(entry.palette);
+			const layered = {};
+			for (const name of Object.keys(flat)) {
+				const value = flat[name];
+				layered[name] = {
+					light: value,
+					dark: value
+				};
+			}
+			paletteDisposers[entry.style] = theme.overrideTokens("mcskin-tokens-" + entry.style, layered);
+		}
+		const shikiDisposers = {};
+		function updateShiki(id) {
+			let style = null;
+			if (id.indexOf("mc-classic-") === 0) style = "classic";
+			else if (id.indexOf("mc-modern-") === 0) style = "modern";
+			else if (id.indexOf("mc-dark-") === 0) style = "dark";
+			for (const k of Object.keys(shikiDisposers)) if (k !== style) {
+				shikiDisposers[k]();
+				delete shikiDisposers[k];
+			}
+			if (style !== null && !shikiDisposers[style]) shikiDisposers[style] = theme.overrideTokens("mcskin-shiki-" + style, shikiFor(style));
+		}
+		ctx.on("theme/change", function(snap) {
+			const newId = snap.active.id;
+			applyPaletteOverride(newId);
+			updateShiki(newId);
+			try {
+				if (newId.indexOf("mc-") === 0) localStorage.setItem("mcskin.theme", newId);
+				else localStorage.removeItem("mcskin.theme");
+			} catch (e) {}
 		});
-	}
-	const paletteDisposers = {};
-	function applyPaletteOverride(id) {
-		for (const k of Object.keys(paletteDisposers)) {
-			paletteDisposers[k]();
-			delete paletteDisposers[k];
-		}
-		const entry = THEME_ENTRIES.find(function(t) {
-			return t.id === id;
-		});
-		if (!entry) return;
-		const flat = buildTokens(entry.palette);
-		const layered = {};
-		for (const name of Object.keys(flat)) {
-			const value = flat[name];
-			layered[name] = {
-				light: value,
-				dark: value
-			};
-		}
-		paletteDisposers[entry.style] = theme.overrideTokens("mcskin-tokens-" + entry.style, layered);
-	}
-	const shikiDisposers = {};
-	function updateShiki(id) {
-		let style = null;
-		if (id.indexOf("mc-classic-") === 0) style = "classic";
-		else if (id.indexOf("mc-modern-") === 0) style = "modern";
-		else if (id.indexOf("mc-dark-") === 0) style = "dark";
-		for (const k of Object.keys(shikiDisposers)) if (k !== style) {
-			shikiDisposers[k]();
-			delete shikiDisposers[k];
-		}
-		if (style && !shikiDisposers[style]) shikiDisposers[style] = theme.overrideTokens("mcskin-shiki-" + style, shikiFor(style));
-	}
-	ctx.on("theme/change", function(snap) {
-		const newId = snap.active.id;
-		applyPaletteOverride(newId);
-		updateShiki(newId);
+		const initialId = theme.getTheme().active.id;
+		applyPaletteOverride(initialId);
+		updateShiki(initialId);
 		try {
-			if (newId.indexOf("mc-") === 0) localStorage.setItem("mcskin.theme", newId);
-			else localStorage.removeItem("mcskin.theme");
+			const saved = localStorage.getItem("mcskin.theme");
+			if (saved && THEME_ENTRIES.some(function(t) {
+				return t.id === saved;
+			})) theme.setTheme(saved);
 		} catch (e) {}
-	});
-	const initialId = theme.getTheme().active.id;
-	applyPaletteOverride(initialId);
-	updateShiki(initialId);
-	try {
-		const saved = localStorage.getItem("mcskin.theme");
-		if (saved && THEME_ENTRIES.some(function(t) {
-			return t.id === saved;
-		})) theme.setTheme(saved);
-	} catch (e) {}
+	}
 	ctx.styles.insert(PICKER_AND_DECORATION_CSS);
-	slots.inject("settings.section", function() {
+	if (slots !== null) slots.inject("settings.section", function() {
 		return slots.register({
 			name: "settings.section",
 			id: "mcskin",
@@ -1655,8 +1670,9 @@ function apply(ctx) {
 //#region src/client/index.ts
 var client_default = {
 	name,
+	inject,
 	apply
 };
 
 //#endregion
-export { apply, client_default as default, name };
+export { apply, client_default as default, inject, name };
