@@ -1,6 +1,6 @@
 {
   "name": "dsh-mcskin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Minecraft-themed skin for the DeepSeek Harness Web GUI. 6 themes (3 styles x 2 modes), with MC pixel-art icons, sidebar biome gradient, page-level MC decorations, and chest/sword/pickaxe control replacements.",
   "type": "module",
   "main": "./dist/client.js",
