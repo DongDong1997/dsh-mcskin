@@ -1,11 +1,14 @@
-// 16x16 pixel-art SVG icons. Each icon returns a <svg> React element with
-// shape-rendering="crispEdges" so the pixels stay sharp at any size. Used by
-// the picker cards (React) and as CSS data URLs by mcskin.ts (main page).
+// 16x16 pixel-art SVG icons (existing) + 30 PNG data URLs from Mojang's
+// vanilla 1.21.11 client.jar (see ./pngIcons.tsx). The PNG icons render as
+// <img> in the picker cards; SVG icons render as <svg>. renderIcon() picks
+// the right shape based on the entry's value type (string -> <img>, function
+// -> <svg>).
 //
 // `px(x, y, w, h, color)` is a pixel-cluster helper. `mkIcon` builds the
 // <rect> list, `svgFrame` wraps it in a <svg>.
 
 import * as React from 'react'
+import { PNG_ICONS } from './pngIcons'
 
 type Rect = [number, number, number, number, string]
 
@@ -39,8 +42,17 @@ export type IconName =
   | 'soulSand' | 'creeper' | 'enderman' | 'cow' | 'pig' | 'chicken' | 'sheep' | 'bee'
   | 'phantom' | 'shulker' | 'elytra' | 'dragonEgg' | 'witherSkull' | 'netherStar'
   | 'chest' | 'pickaxe' | 'sword'
+  // PNG icons (Mojang vanilla 1.21.11 textures). See ./pngIcons.tsx.
+  | 'anvil' | 'axolotl' | 'beacon' | 'book' | 'bookshelf' | 'bucket'
+  | 'cat' | 'clock' | 'crafting_table' | 'diamond' | 'diamond_axe'
+  | 'diamond_ore' | 'diamond_pickaxe' | 'diamond_sword' | 'dolphin'
+  | 'emerald_ore' | 'fox' | 'furnace' | 'glass' | 'horse' | 'panda'
+  | 'parrot' | 'redstone' | 'shears' | 'totem_of_undying' | 'trident'
+  | 'turtle' | 'warden' | 'wolf'
 
-export const MC_ICONS: Record<IconName, () => React.ReactElement> = {
+// SVG factory map (existing 35 icons). PNG icons live in PNG_ICONS and are
+// resolved at render time — see renderIcon().
+export const MC_ICONS: Record<string, () => React.ReactElement> = {
   grassBlock: () => mkIcon([
     px(0, 0, 16, 5, '#7EBD52'), px(0, 5, 16, 11, '#866043'),
     px(1, 3, 1, 1, '#A0DA68'), px(3, 2, 2, 1, '#A0DA68'),
@@ -432,6 +444,22 @@ export const MC_ICONS: Record<IconName, () => React.ReactElement> = {
 }
 
 export function renderIcon(name: IconName): React.ReactElement | null {
+  // PNG icon (Mojang vanilla texture, inlined as base64 data URL).
+  const png = PNG_ICONS[name]
+  if (png) {
+    return React.createElement('img', {
+      src: png,
+      alt: name,
+      className: 'mcskin-svg',
+      style: { width: '100%', height: '100%', imageRendering: 'pixelated' },
+    })
+  }
+  // SVG icon (hand-built pixel art, rendered as <svg> with crispEdges).
   const factory = MC_ICONS[name]
   return factory ? factory() : null
+}
+
+/** Returns true if the icon name is backed by a Mojang PNG texture. */
+export function isPngIcon(name: string): boolean {
+  return Object.prototype.hasOwnProperty.call(PNG_ICONS, name)
 }

@@ -23,6 +23,9 @@
     "test": "node test-bundle.cjs",
     "prepublishOnly": "npm run clean && npm run build && npm test"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "keywords": [
     "dsh-plugin",
     "minecraft",
