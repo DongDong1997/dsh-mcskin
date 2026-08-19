@@ -1,8 +1,8 @@
-// dsh-mcskin — apply(ctx). All theme/slots interactions are guarded so that
+// dsh-mcskin — apply(ctx). All theme/slots/styles interactions are guarded so
 // the plugin still loads even when those services live in a sibling include
-// tree (DSH v0.2.2 crashed at boot because inject: ['theme','slots','styles']
-// blocked forever). The main-page decorations always apply; the picker and
-// the theme registry only fire when the services are available.
+// tree (DSH boot crashes if the loader's `fiber.ctx` is missing any declared
+// inject dependency). The main-page decorations always apply; the picker
+// and the theme registry only fire when the services are available.
 
 import { THEME_ENTRIES, type ThemeEntry } from './themeEntries'
 import { PickerRoot } from './picker'
@@ -11,26 +11,22 @@ import { buildTokens } from './palettes'
 
 export const name = 'dsh-mcskin'
 
-// Cordis loader blocks this plugin's activation until the listed services
-// are available in the plugin's loader-entry context. `styles` is provided
-// by the cordis-client-runner at every bundle's root level, so it's always
-// safe to declare. `theme` and `slots` are registered by web-app's plugins
-// (ui-theme, ui-slots) inside their own include tree, so declaring them in
-// inject here makes the loader wait forever for services that live in a
-// sibling subtree — which is what crashed DSH boot at v0.2.2.
-// We don't inject them here; instead the apply handler resolves them
-// lazily via the runtime-level scope so the plugin still loads even if
-// they're not in scope. The marketplace's hot-mount path can re-bind
-// them later if it boots dsh-mcskin inside web-app's subtree.
-export const inject = ['styles'] as const
+// v0.2.4 declared inject: [] — the loader doesn't wait for any service.
+// v0.2.2 (inject: [theme,slots,styles]) and v0.2.3 (inject: [styles]) both
+// crashed DSH boot because the user's profile-level bundle entry sits in a
+// root include tree that has no services at all (theme/slots live in
+// web-app's subtree, styles is provided by cordis-client-runner but not
+// visible to the profile's fiber.ctx). Declaring no inject means the loader
+// activates the entry immediately; runtime service lookups are defensive
+// below.
+export const inject = [] as const
 
 export function apply(ctx: any): void {
-  // Lazy resolve `theme` and `slots`. They live in web-app's include subtree
-  // and may or may not be in this loader entry's context. The plugin still
-  // loads regardless — the main-page decorations always apply; the theme
-  // registry and the picker only fire when both services are bound.
+  // Lazy resolve services from the loader entry's context. Anything missing
+  // downgrades that feature path silently — the loader never crashes.
   const theme: any = (ctx.theme !== undefined) ? ctx.theme : null
   const slots: any = (ctx.slots !== undefined) ? ctx.slots : null
+  const styles: any = (ctx.styles !== undefined) ? ctx.styles : null
 
   // Tag body so our main-page CSS selectors never bleed out and never collide.
   try { document.body.classList.add('mcskin-decor') } catch (e) {}
@@ -106,11 +102,13 @@ export function apply(ctx: any): void {
     } catch (e) {}
   }
 
-  // 4. CSS injection — always runs (styles is in inject).
-  ctx.styles.insert(PICKER_AND_DECORATION_CSS)
+  // 4. CSS injection — only when styles is available.
+  if (styles !== null && typeof styles.insert === 'function') {
+    try { styles.insert(PICKER_AND_DECORATION_CSS) } catch (e) {}
+  }
 
   // 5. Settings section picker — only when slots is available.
-  if (slots !== null) {
+  if (slots !== null && typeof slots.inject === 'function') {
     slots.inject('settings.section', function () {
       return slots.register(
         {

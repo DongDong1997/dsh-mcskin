@@ -1578,10 +1578,11 @@ function shikiFor(style) {
 //#endregion
 //#region src/client/mcskin.ts
 const name = "dsh-mcskin";
-const inject = ["styles"];
+const inject = [];
 function apply(ctx) {
 	const theme = ctx.theme !== void 0 ? ctx.theme : null;
 	const slots = ctx.slots !== void 0 ? ctx.slots : null;
+	const styles = ctx.styles !== void 0 ? ctx.styles : null;
 	try {
 		document.body.classList.add("mcskin-decor");
 	} catch (e) {}
@@ -1648,8 +1649,10 @@ function apply(ctx) {
 			})) theme.setTheme(saved);
 		} catch (e) {}
 	}
-	ctx.styles.insert(PICKER_AND_DECORATION_CSS);
-	if (slots !== null) slots.inject("settings.section", function() {
+	if (styles !== null && typeof styles.insert === "function") try {
+		styles.insert(PICKER_AND_DECORATION_CSS);
+	} catch (e) {}
+	if (slots !== null && typeof slots.inject === "function") slots.inject("settings.section", function() {
 		return slots.register({
 			name: "settings.section",
 			id: "mcskin",
