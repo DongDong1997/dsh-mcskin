@@ -1,0 +1,52 @@
+{
+  "name": "dsh-mcskin",
+  "version": "0.1.0",
+  "description": "Minecraft-themed skin for the DeepSeek Harness Web GUI. 6 themes (3 styles x 2 modes), with MC pixel-art icons, sidebar biome gradient, page-level MC decorations, and chest/sword/pickaxe control replacements.",
+  "type": "module",
+  "main": "./dist/client.js",
+  "exports": {
+    ".": "./dist/client.js",
+    "./client": "./dist/client.js"
+  },
+  "files": [
+    "dist",
+    "cordis.patch.yml",
+    "LICENSE",
+    "README.md",
+    "PUBLISHING.md",
+    ".npmignore"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "clean": "rm -rf dist",
+    "test": "node test-bundle.cjs",
+    "prepublishOnly": "npm run clean && npm run build && npm test"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "minecraft",
+    "theme",
+    "skin",
+    "deepseek"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "~18.3.1",
+    "tsdown": "^0.22.2",
+    "typescript": "^5.0.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

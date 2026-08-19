@@ -1,0 +1,11 @@
+# dsh-mcskin bundle patch.
+#
+# Registers a top-level browser-side plugin row. The web-app bundle's
+# `modules` plugin (see `packages/bundle/web-app/cordis.patch.yml`) scans
+# every browser-side plugin row at boot and composes them into
+# `window.__DSH_BOOT__`, so a single top-level row is enough.
+#
+# RENAME `name` below to your scoped npm package name before publishing.
+
+- id: dsh-mcskin
+  name: 'dsh-mcskin'

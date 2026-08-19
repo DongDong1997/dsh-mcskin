@@ -1,0 +1,11 @@
+# Build / test artifacts
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# Local smoke test (also covered by .npmignore, but git also needs it)
+test-bundle.cjs
+
+# OS junk
+Thumbs.db

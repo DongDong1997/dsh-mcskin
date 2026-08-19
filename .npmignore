@@ -1,0 +1,8 @@
+# Source files are not part of the published bundle; only dist + manifests.
+src/
+tsconfig.json
+tsdown.config.ts
+test-bundle.cjs
+node_modules/
+*.log
+.DS_Store
