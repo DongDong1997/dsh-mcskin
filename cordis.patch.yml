@@ -1,11 +1,18 @@
 # dsh-mcskin bundle patch.
 #
-# Registers a top-level browser-side plugin row. The web-app bundle's
-# `modules` plugin (see `packages/bundle/web-app/cordis.patch.yml`) scans
-# every browser-side plugin row at boot and composes them into
-# `window.__DSH_BOOT__`, so a single top-level row is enough.
+# Registers a top-level browser-side plugin row so the web-app bundle's
+# `modules` plugin (see `packages/bundle/web-app/cordis.patch.yml`) picks
+# it up at boot and composes it into `window.__DSH_BOOT__`.
+#
+# IMPORTANT: the `- insert:` wrapper is REQUIRED for dshmarket's hot-mount
+# parser (parseSimplePatch in dshmarket/src/hot.ts). The bare `- id:` form
+# is the standard bundle-layer format but dshmarket rejects it as
+# config/expression rows, so the marketplace keeps demanding a restart.
+# Without the wrapper, hot-mount never works and the plugin loads only
+# via the bundle layer on a cold DSH restart.
 #
 # RENAME `name` below to your scoped npm package name before publishing.
 
-- id: dsh-mcskin
-  name: 'dsh-mcskin'
+- insert:
+  - id: dsh-mcskin
+    name: 'dsh-mcskin'
